@@ -3,6 +3,7 @@ package controller;
 /**
  * Created by Christofferpalsgaard on 24/11/2016.
  */
+import com.google.gson.JsonObject;
 import model.Book;
 import model.Curriculum;
 import sdk.Connection;
@@ -47,6 +48,10 @@ public class Controller {
 
                     } else
                         System.out.println("I didn't work at all");
+                    break;
+                case 2:
+                    createUser();
+                    mainMenu();
             }
 
         } catch (InputMismatchException e) {
@@ -57,57 +62,36 @@ public class Controller {
         }
     }
 
-//    public void menu(){
-//
-//
-////        do {
-////            System.out.println("Velkommen til Biancas bogklub");
-////            System.out.println("1) Print en bog");
-////            System.out.println("2) Print alle bøger");
-////            switch (input.nextInt()) {
-////                case 1:
-////                    printBook();
-////                    break;
-////                case 2:
-////                    printBooks();
-////                    break;
-////                default:
-////                    System.out.println("Indtast enten 1 eller 2");
-////            }
-////        }while(true);//Brug noget andet en true. CurrentUser != null
-//
-//
-//        String username, password;
-//        System.out.println("Login");
-//        System.out.println("Iindtast username");
-//        username = input.nextLine();
-//        System.out.println("Iindtast password");
-//        password = input.nextLine();
-//
-//        String token = Connection.authorizeLogin(username, password);
-//        if(token != null){
-//            do {
-//                System.out.println("Velkommen til Biancas bogklub");
-//                System.out.println("1) Print en bog");
-//                System.out.println("2) Print alle bøger");
-//                switch (input.nextInt()) {
-//                    case 1:
-//                        printBook();
-//                        break;
-//                    case 2:
-//                        printBooks();
-//                        break;
-//                    default:
-//                        System.out.println("Indtast enten 1 eller 2");
-//                }
-//            }while(true);//Brug noget andet en true. CurrentUser != null
-//        }
-//        else {
-//            System.out.println("user pas fejl");
-//        }
-//
-//
-//    }
+
+    public void createUser() {
+        JsonObject data = new JsonObject();
+
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Input your firstname");
+        data.addProperty("firstname", input.nextLine());
+
+        System.out.println("Input your Lastname");
+        data.addProperty("lastname", input.nextLine());
+
+        System.out.println("Input your Email");
+        data.addProperty("email", input.nextLine());
+
+        System.out.println("Input your Username");
+        data.addProperty("username", input.nextLine());
+
+        System.out.println("Input your Password");
+        data.addProperty("password", input.nextLine());
+
+        data.addProperty("usertype", "0");
+
+        Connection.postUser(data);
+
+
+    }
+
+
+
 
 
 
@@ -116,6 +100,9 @@ public class Controller {
         System.out.println("1) Print a specific book");
         System.out.println("2) Print all books");
         System.out.println("3) Print all curriculums");
+        System.out.println("3) Change your user info");
+        System.out.println("3) Delete your user");
+        System.out.println("3) Logout");
 
         switch (input.nextInt()) {
             case 1:
@@ -132,6 +119,17 @@ public class Controller {
                 printcurriculums();
                 userMenu();
                 break;
+            case 4:
+                changeUserInfo();
+                userMenu();
+                break;
+            case 5:
+                deleteUser();
+                userMenu();
+                break;
+            case 6:
+                logout();
+                mainMenu();
 
 
                 default:
@@ -143,7 +141,8 @@ public class Controller {
     private void printBook() {
         System.out.println("What is the BookID");
         Book book = Connection.getBook(input.nextInt());
-        System.out.println("id " + book.getBookID() + " title " + book.getTitle());
+        System.out.println("\nId: " + book.getBookID() + "\nTitle: " + book.getTitle() + "\nPrice on Acedemic Books: " +
+                book.getPriceAB() + "\nPrice on Saxo: " + book.getPriceSAXO() + "\nPrice on Cdon: " + book.getPriceCDON() + "\n");
     }
 
 
@@ -179,12 +178,30 @@ public class Controller {
 
         ArrayList<Book> curriculumBooks = Connection.getCurriculumBooks(showSpecificCurriculum);
 
-        System.out.println("here are all the current books your chosen semester");
+        System.out.println("Here are all the current books for your chosen semester," +
+                "\nyou can choose too look at specific book details or go back to the usermenu" +
+                "\nPress one of the following" +
+                "\n1: For specific prices and info" +
+                "\n2: Go back to UserMenu");
+
 
         for (Book book : curriculumBooks)
-            System.out.println("ID: " + book.getBookID() + "title: " + book.getTitle() + " ISBN: " + book.getISBN());
-        printBook();
+            System.out.println("ID: " + book.getBookID() + "Title: " + book.getTitle() + " ISBN: " + book.getISBN());
+        switch (input.nextInt()) {
+
+            case 1:
+                printBook();
+                break;
+            case 2:
+                userMenu();
+                break;
+            default:
+                System.out.println("please type 1 or 2");
+
+        }
+
     }
+
 
 
 
@@ -197,6 +214,6 @@ public class Controller {
     }
 
     public void logout() {
-
+    mainMenu();
     }
 }

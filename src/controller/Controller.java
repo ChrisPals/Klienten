@@ -32,7 +32,7 @@ public class Controller {
     public void mainMenu() {
 
         System.out.println("Welcome to the mainmenu");
-        System.out.println("You have the following choices");
+        System.out.println("\nYou have the following choices");
         System.out.println("Login");
         System.out.println("Create user");
 
@@ -52,17 +52,18 @@ public class Controller {
 
                     JsonParser parse = new JsonParser();
 
-                JsonArray testm = (JsonArray) parse.parse(token);
-                    JsonObject user = (JsonObject) testm.get(0);
-                  userID = user.get("userID").getAsInt();
+//                JsonArray testm = (JsonArray) parse.parse(token);
+                  //  JsonObject user = (JsonObject) testm.get(0);
+              //    userID = user.get("userID").getAsInt();
 
-                   String temp=testm.get(1).toString();
-                  tokenId = temp.substring(1,temp.length()-1);
+                 //  String temp=testm.get(1).toString();
+                 // tokenId = temp.substring(1,temp.length()-1);
                     if (token != null) {
                         userMenu();
 
                     } else
                         System.out.println("I didn't work at all");
+                    mainMenu();
                     break;
                 case 2:
                     createUser();
@@ -111,13 +112,13 @@ public class Controller {
 
 
     public void userMenu() {
-        System.out.println("I Welcome you to a world of books");
+        System.out.println("\nI Welcome you to a world of books");
         System.out.println("1) Print a specific book");
         System.out.println("2) Print all books");
         System.out.println("3) Print all curriculums");
-        System.out.println("3) Change your user info");
-        System.out.println("3) Delete your user");
-        System.out.println("3) Logout");
+        System.out.println("4) Change your user info");
+        System.out.println("5) Delete your user");
+        System.out.println("6) Logout");
 
         switch (input.nextInt()) {
             case 1:
@@ -154,7 +155,7 @@ public class Controller {
 
     }
     private void printBook() {
-        System.out.println("What is the BookID");
+        System.out.println("\nWhat is the BookID");
         Book book = Connection.getBook(input.nextInt());
         System.out.println("\nId: " + book.getBookID() + "\nTitle: " + book.getTitle() + "\nPrice on Acedemic Books: " +
                 book.getPriceAB() + "\nPrice on Saxo: " + book.getPriceSAXO() + "\nPrice on Cdon: " + book.getPriceCDON() + "\n");
@@ -181,9 +182,9 @@ public class Controller {
 
 
         do {
-            System.out.println("input the id of the curriculum you want to have shown");
+            System.out.println("\ninput the id of the curriculum you want to have shown");
             while (!input.hasNextInt()) {
-                System.out.println("try again please, remember its an id(number) show in the curriculum list above");
+                System.out.println("\ntry again please, remember its an id(number) show in the curriculum list above");
                 input.next();
 
             }
@@ -193,7 +194,7 @@ public class Controller {
 
         ArrayList<Book> curriculumBooks = Connection.getCurriculumBooks(showSpecificCurriculum);
 
-        System.out.println("Here are all the current books for your chosen semester," +
+        System.out.println("\nHere are all the current books for your chosen semester," +
                 "\nyou can choose too look at specific book details or go back to the usermenu" +
                 "\nPress one of the following" +
                 "\n1: For specific prices and info" +
@@ -223,7 +224,7 @@ public class Controller {
     public void changeUserInfo() {
 Scanner input = new Scanner(System.in);
 
-        System.out.println("Type in the aresas you want to change");
+        System.out.println("Type in the areas you want to change");
 
         JsonObject data = new JsonObject();
 

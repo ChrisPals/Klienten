@@ -8,7 +8,7 @@ public class Bookstore {
     public static void main(String[] args) {
         Config.initConfig();
 
-        new Controller().menu();
+        new Controller().mainMenu();
 
     }
 }

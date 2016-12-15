@@ -3,7 +3,10 @@ package controller;
 /**
  * Created by Christofferpalsgaard on 24/11/2016.
  */
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import model.Book;
 import model.Curriculum;
 import sdk.Connection;
@@ -21,6 +24,9 @@ public class Controller {
     public Controller() {
         input = new Scanner(System.in);
     }
+
+    private int userID;
+    private String tokenId;
 
 
     public void mainMenu() {
@@ -43,6 +49,15 @@ public class Controller {
                     password = input.nextLine();
 
                     String token = Connection.authorizeLogin(username, password);
+
+                    JsonParser parse = new JsonParser();
+
+                JsonArray testm = (JsonArray) parse.parse(token);
+                    JsonObject user = (JsonObject) testm.get(0);
+                  userID = user.get("userID").getAsInt();
+
+                   String temp=testm.get(1).toString();
+                  tokenId = temp.substring(1,temp.length()-1);
                     if (token != null) {
                         userMenu();
 
@@ -69,16 +84,16 @@ public class Controller {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Input your firstname");
-        data.addProperty("firstname", input.nextLine());
+        data.addProperty("firstName", input.nextLine());
 
         System.out.println("Input your Lastname");
-        data.addProperty("lastname", input.nextLine());
+        data.addProperty("lastName", input.nextLine());
 
         System.out.println("Input your Email");
         data.addProperty("email", input.nextLine());
 
         System.out.println("Input your Username");
-        data.addProperty("username", input.nextLine());
+        data.addProperty("userName", input.nextLine());
 
         System.out.println("Input your Password");
         data.addProperty("password", input.nextLine());
@@ -206,6 +221,29 @@ public class Controller {
 
 
     public void changeUserInfo() {
+Scanner input = new Scanner(System.in);
+
+        System.out.println("Type in the aresas you want to change");
+
+        JsonObject data = new JsonObject();
+
+        System.out.println("type first name");
+        data.addProperty("firstName", input.nextLine());
+
+        System.out.println("type first name");
+        data.addProperty("lastName", input.nextLine());
+
+        System.out.println("type first name");
+        data.addProperty("email", input.nextLine());
+
+        System.out.println("type first name");
+        data.addProperty("userName", input.nextLine());
+
+        System.out.println("type first name");
+        data.addProperty("password", input.nextLine());
+
+        data.addProperty("userType", "0");
+        Connection.putUser(tokenId, data, userID);
 
     }
 
